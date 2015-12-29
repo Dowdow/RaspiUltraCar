@@ -1,11 +1,13 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
   </head>
   <body>
     <center>
       <img src="http://192.168.1.31:3001/?action=stream" alt="Webcam content"/>
       <p id="direction"></p>
+      <div id="static"></div>
     </center>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/nipplejs.min.js"></script>
@@ -49,6 +51,30 @@
           socket.emit('stop');
         }
       };
+
+      var static = nipplejs.create({
+        zone: document.getElementById('static'),
+        mode: 'static',
+        position: {left: '50%', top: '75%'},
+        color: 'blue'
+      });
+      
+      static[0].on('dir', function (evt) {
+        switch(evt.target.direction.angle) {
+          case 'up':
+            socket.emit('up');
+            break;
+          case 'down':
+            socket.emit('down');
+            break;
+          case 'left':
+            socket.emit('left');
+            break;
+          case 'right':
+            socket.emit('right');
+            break;
+        }
+      });
     </script>
   </body>
 </html>
