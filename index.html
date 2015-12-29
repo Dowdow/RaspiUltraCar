@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <center>
+      <img src="http://192.168.1.31:3001/?action=stream" alt="Webcam content"/>
+      <p id="direction"></p>
+    </center>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/nipplejs.min.js"></script>
+    <script>
+      var socket = io.connect();
+
+      var lastKey = 0;
+      document.onkeydown = function (event) {
+        if(lastKey != 0) {
+          return;
+        }
+	var direction = document.getElementById('direction');
+        switch (event.keyCode) {
+          case 37:
+            socket.emit('left');
+            lastKey = 37;
+            direction.innerHTML = 'Left';
+            break;
+          case 38:
+            socket.emit('up');
+	    lastKey = 38;
+            direction.innerHTML = 'Up';
+            break;
+          case 39:
+            socket.emit('right');
+            lastKey = 39;
+            direction.innerHTML = 'Right';
+            break;
+          case 40:
+            socket.emit('down');
+            lastKey = 40;
+            direction.innerHTML = 'Down';
+            break;
+        }
+      };
+
+      document.onkeyup = function (event) {
+	lastKey = 0;
+        document.getElementById('direction').innerHTML = '';
+        if(event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40) {
+          socket.emit('stop');
+        }
+      };
+    </script>
+  </body>
+</html>
