@@ -8,6 +8,7 @@
       <img src="http://192.168.1.31:3001/?action=stream" alt="Webcam content"/>
       <p id="direction"></p>
       <div id="static"></div>
+      <button id="stop">STOP</div>
     </center>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/nipplejs.min.js"></script>
@@ -75,6 +76,10 @@
             break;
         }
       });
+
+      document.getElementById('stop').onclick = function(event) {
+        socket.emit('stop');
+      }
     </script>
   </body>
 </html>
